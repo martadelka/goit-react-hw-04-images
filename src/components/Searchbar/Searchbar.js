@@ -5,47 +5,43 @@ import {
   SearchFormButton,
   SearchFormInput,
 } from './Searchbar.styled';
-import { Component } from 'react'
+import { useState } from 'react'
 import { notifyInputQuerry } from '../Notify/Notify'
 
-export class Searchbar extends Component {
-  state = {
-    query: '',
+export const Searchbar = ({ onSubmit }) => {
+  const [query, setQuery] = useState('')
+
+  const onInputChange = (event) => {
+    const newQuery = event.currentTarget.value;
+    setQuery(newQuery);
   };
 
-  onInputChange = event => {
-    const query = event.currentTarget.value;
-    this.setState({ query: query });
-  };
-
-  handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (this.state.query.trim() === '') {
+    if (query.trim() === '') {
       notifyInputQuerry();
       return;
     }
-    this.props.onSubmit(this.state.query);
+    onSubmit(query);
     event.target.reset();
   };
 
-  render() {
-    return (
+  return (
       <Header>
-        <SearchForm onSubmit={this.handleSubmit}>
+        <SearchForm onSubmit={handleSubmit}>
           <SearchFormButton type="submit">
             <CiSearch size={22} />
           </SearchFormButton>
           <SearchFormInput
-            value={this.state.query}
+            value={query}
             type="text"
             name="query"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            onChange={this.onInputChange}
+            onChange={onInputChange}
           />
         </SearchForm>
       </Header>
     );
-  }
 };

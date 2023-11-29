@@ -25,6 +25,7 @@ export const App = () => {
   };
 
   useEffect(() => {
+    if (!query) return;
     const loadResult = async () => {
       try {
         setLoading(true);
